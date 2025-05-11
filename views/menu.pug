@@ -1,0 +1,67 @@
+extends layout
+
+block content
+  .menu-container
+    .menu-header
+      h1.menu-title OUR MENU
+      .menu-underline
+    
+    .menu-filters
+      button.filter-button.active(data-filter="all") All
+      button.filter-button(data-filter="starter") Starters
+      button.filter-button(data-filter="main") Main Courses
+      button.filter-button(data-filter="dessert") Desserts
+      button.filter-button(data-filter="vegan") Vegan
+
+    .menu-categories
+      each category in menuCategories
+        .menu-category(id=category.id)
+          h2.category-title= category.name
+          
+          .menu-items
+            each item in menuItems.filter(item => item.category === category.id)
+              .menu-item(data-categories=item.category data-dietary=item.dietaryRestrictions.join(' '))
+                .menu-item-image-container
+                  img.menu-item-image(src=item.image, alt=item.name)
+                .menu-item-content
+                  .menu-item-header
+                    h3.menu-item-title= item.name
+                    .menu-item-price= item.price
+                  p.menu-item-description= item.description
+                  .menu-item-dietary
+                    each restriction in item.dietaryRestrictions
+                      span.dietary-tag(class=restriction)= restriction
+
+    .reservation-container
+      a.reservation-button(href="/reservations") Make Reservation
+  
+  script.
+    // Menu filtering functionality
+    document.addEventListener('DOMContentLoaded', function() {
+      const filterButtons = document.querySelectorAll('.filter-button');
+      const menuItems = document.querySelectorAll('.menu-item');
+      
+      filterButtons.forEach(button => {
+        button.addEventListener('click', function() {
+          // Remove active class from all buttons
+          filterButtons.forEach(btn => btn.classList.remove('active'));
+          
+          // Add active class to clicked button
+          this.classList.add('active');
+          
+          const filterValue = this.getAttribute('data-filter');
+          
+          // Filter menu items
+          menuItems.forEach(item => {
+            if (filterValue === 'all') {
+              item.style.display = 'flex';
+            } else if (item.getAttribute('data-categories').includes(filterValue) || 
+                      item.getAttribute('data-dietary').includes(filterValue)) {
+              item.style.display = 'flex';
+            } else {
+              item.style.display = 'none';
+            }
+          });
+        });
+      });
+    });

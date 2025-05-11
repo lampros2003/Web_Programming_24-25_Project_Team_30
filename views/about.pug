@@ -1,0 +1,44 @@
+extends layout
+
+block content
+  .about-container
+    .about-header
+      h1.about-title OUR STORY
+      .about-underline
+    
+    .about-content
+      .about-image-container
+        img.about-image(src="/images/chef-cooking.jpg", alt="Chef cooking in restaurant kitchen")
+      
+      .about-text
+        p.about-paragraph
+          | Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus lacinia odio vitae vestibulum vestibulum. 
+          | Cras porttitor metus vel justo vehicula, eu venenatis magna maximus. Pellentesque habitant morbi tristique 
+          | senectus et netus et malesuada fames ac turpis egestas.
+        
+        p.about-paragraph
+          | Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo. 
+          | Quisque sit amet est et sapien ullamcorper pharetra. Vestibulum erat wisi, condimentum sed, commodo vitae.
+        
+        .about-quote
+          blockquote "We believe in creating memorable dining experiences that blend tradition with innovation."
+          .quote-author — Executive Chef
+    
+    .reservation-container
+      a.reservation-button(href="/reservations") Make Reservation
+    
+    .about-features
+      .feature-item
+        .feature-icon 🍽️
+        h3.feature-title Fine Dining
+        p.feature-text An elegant atmosphere with exceptional service.
+      
+      .feature-item
+        .feature-icon 🌱
+        h3.feature-title Fresh Ingredients
+        p.feature-text Locally sourced, seasonal produce in every dish.
+      
+      .feature-item
+        .feature-icon 👨‍🍳
+        h3.feature-title Master Chefs
+        p.feature-text Culinary experts crafting unforgettable flavors.

@@ -1,0 +1,60 @@
+extends layout
+
+block content
+  .reservation-form-container
+    h1.reservation-title RESERVATION
+    
+    form.reservation-form(action="/submit-reservation", method="post")
+      .form-group
+        label(for="date") DATE
+        input#date.form-input(type="date" name="date" required)
+      
+      .form-group
+        label(for="time") TIME
+        input#time.form-input(type="time" name="time" min="10:00" max="22:00" required)
+      
+      .form-group
+        label(for="people") PEOPLE
+        input#people.form-input(type="number" name="people" min="1" max="20" placeholder="4" required)
+      
+      .form-group
+        label(for="area") AREA
+        .area-options
+          label.area-option
+            input#inside(type="radio" name="area" value="inside")
+            span Inside
+          label.area-option
+            input#outside(type="radio" name="area" value="outside")
+            span Outside
+          label.area-option
+            input#anywhere(type="radio" name="area" value="anywhere" checked)
+            span Anywhere
+      
+      .selected-area
+        p Your selected area: <span id="selectedArea">Anywhere</span>
+      
+      button.reservation-submit(type="submit") Make Reservation
+  
+  script.
+    // Update selected area display when radio buttons change
+    document.querySelectorAll('input[name="area"]').forEach(radio => {
+      radio.addEventListener('change', function() {
+        document.getElementById('selectedArea').textContent = this.value.charAt(0).toUpperCase() + this.value.slice(1);
+        
+        // Remove active class from all options
+        document.querySelectorAll('.area-option').forEach(option => {
+          option.classList.remove('active');
+        });
+        
+        // Add active class to selected option
+        this.parentElement.classList.add('active');
+      });
+    });
+    
+    // Initialize the active class on page load
+    window.addEventListener('DOMContentLoaded', () => {
+      const checkedRadio = document.querySelector('input[name="area"]:checked');
+      if (checkedRadio) {
+        checkedRadio.parentElement.classList.add('active');
+      }
+    });
