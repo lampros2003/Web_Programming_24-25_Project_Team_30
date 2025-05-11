@@ -1,0 +1,16 @@
+doctype html
+html
+  head
+    title= title
+    meta(name="viewport" content="width=device-width, initial-scale=1.0")
+    link(rel='stylesheet', href='/stylesheets/style.css')
+  body
+    .header
+      h1.restaurant-name= title
+    .nav-container
+      nav.main-nav
+        a.nav-item(href="/about", class=(activeTab === 'about' ? 'active' : '')) About us
+        a.nav-item(href="/menu", class=(activeTab === 'menu' ? 'active' : '')) Menu
+        a.nav-item(href="/reservations", class=(activeTab === 'reservations' ? 'active' : '')) Reservations
+    .content
+      block content
