@@ -1,0 +1,46 @@
+doctype html 
+html 
+    -const title= "Dashboard"
+    -const period= "March"
+    -const first_day = 5
+    -const total_days = 31
+    head 
+    link(rel='stylesheet', href='dashboard_style.css')
+    body 
+        include nav_bar.pug
+        form.dashboard-form(action="/dashboard", method="get")
+            select(name="months" id="months" onchange="this.form.submit()")
+                -const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
+                for month in months
+                    option(value=month)= month
+        h1= period 
+        .calendar
+            -const days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]
+            for day in days 
+                .day-header= day
+        
+            -let day_number = 1
+            -const areas = ["area-1", "area-2", "area-3", "area-4"]
+
+            //sample data
+            -const area_1 = Array(31).fill(4)
+            -const area_2 = Array(31).fill(20)
+            -const area_3 = Array(31).fill(1)
+            -const area_4 = Array(31).fill(3)
+
+            - for (let i = 1; i < total_days+first_day  ; i++)
+                if i < first_day
+                    .empty
+                else
+                    .day 
+                        .day-number= i-first_day+1                
+                        .area(class= areas[0])= area_1[i-first_day]
+                        .area(class= areas[1])= area_2[i-first_day]
+                        .area(class= areas[2])= area_3[i-first_day]
+                        .area(class= areas[3])= area_4[i-first_day]
+                        
+
+
+
+
+

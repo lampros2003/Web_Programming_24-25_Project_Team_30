@@ -1,0 +1,21 @@
+ 
+link(rel='stylesheet', href='nav_style.css')
+if !title
+  -let title ="Dashboard"
+.nav-container
+  nav.main-nav
+    case title
+      when 'Dashboard'
+        a.nav-item(href="/menu", class=(activeTab === 'menu' ? 'active' : '')) Menu
+        a.nav-item(href="/tables", class=(activeTab === 'tables' ? 'active' : '')) Tables
+      when 'Menu'
+        a.nav-item(href="/dashboard", class=(activeTab === 'dashboard' ? 'active' : '')) Dashboard
+        a.nav-item(href="/tables", class=(activeTab === 'tables' ? 'active' : '')) Tables
+      when 'Tables'
+        a.nav-item(href="/dashboard", class=(activeTab === 'dashboard' ? 'active' : '')) Dashboard
+        a.nav-item(href="/menu", class=(activeTab === 'menu' ? 'active' : '')) Menu
+      default
+        a.nav-item(href="/menu", class=(activeTab === 'menu' ? 'active' : '')) Menu
+        a.nav-item(href="/tables", class=(activeTab === 'tables' ? 'active' : '')) Tables
+
+    
