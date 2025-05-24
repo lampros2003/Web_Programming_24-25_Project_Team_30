@@ -14,39 +14,45 @@ block content
       button.filter-button(data-filter="vegan") Vegan
 
     .menu-categories
-      each category in menuCategories
-        .menu-category(id=category.id)
-          h2.category-title= category.name
-          
-          .menu-items
-            each item in menuItems.filter(item => item.category === category.id)
-              .menu-item(data-categories=item.category data-dietary=item.dietaryRestrictions.join(' '))
-                .menu-item-image-container
-                  img.menu-item-image(src=item.image, alt=item.name)
-                .menu-item-content
-                  .menu-item-header
-                    h3.menu-item-title= item.name
-                    .menu-item-price= item.price
-                  p.menu-item-description= item.description
-                  .menu-item-dietary
-                    each restriction in item.dietaryRestrictions
-                      span.dietary-tag(class=restriction)= restriction
+      if menuItems && menuItems.length > 0
+        each category in menuCategories
+          .menu-category(id=category.id)
+            h2.category-title= category.name
+            
+            .menu-items
+              each item in menuItems.filter(item => item.category === category.id)
+                .menu-item(data-categories=item.category data-dietary=item.dietaryRestrictions.join(' '))
+                  .menu-item-image-container
+                    img.menu-item-image(src=item.image, alt=item.name)
+                  .menu-item-content
+                    .menu-item-header
+                      h3.menu-item-title= item.name
+                      .menu-item-price= item.price
+                    p.menu-item-description= item.description
+                    if item.dietaryRestrictions && item.dietaryRestrictions.length > 0
+                      .menu-item-dietary
+                        each restriction in item.dietaryRestrictions
+                          span.dietary-tag(class=restriction)= restriction
+      else
+        .menu-category
+          h2.category-title No Menu Items Available
+          p.no-items-message Please check back later or contact the restaurant.
 
     .reservation-container
       a.reservation-button(href="/reservations") Make Reservation
   
   script.
-    // Menu filtering functionality
+    // Menu filtering 
     document.addEventListener('DOMContentLoaded', function() {
       const filterButtons = document.querySelectorAll('.filter-button');
       const menuItems = document.querySelectorAll('.menu-item');
       
       filterButtons.forEach(button => {
         button.addEventListener('click', function() {
-          // Remove active class from all buttons
+          // Remove active class from all buttons to be sure only one is active
           filterButtons.forEach(btn => btn.classList.remove('active'));
           
-          // Add active class to clicked button
+          // Add active class to clicked button, now only one button will be active
           this.classList.add('active');
           
           const filterValue = this.getAttribute('data-filter');
