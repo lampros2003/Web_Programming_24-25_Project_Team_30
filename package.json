@@ -5,7 +5,9 @@
   "scripts": {
     "start": "node ./bin/www",
     "dev": "nodemon ./bin/www",
-    "init-db": "node ./bin/init-database.js"
+    "init-db": "node ./bin/init-database.js",
+    "build": "npm install && npm run init-db"
+ 
   },
   "dependencies": {
     "cookie-parser": "~1.4.4",
