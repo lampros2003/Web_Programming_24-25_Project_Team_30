@@ -29,7 +29,8 @@ async function initializeApp() {
   } catch (err) {
     console.error('Error initializing database:', err);
     console.error('\nThis might be due to missing dependencies or database permissions.');
-
+    
+   
     process.exit(1);
   }
 }
