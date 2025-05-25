@@ -21,6 +21,7 @@ async function initializeIfNeeded() {
           } else {
             console.log('Database initialization failed, continuing anyway...');
             resolve(); 
+          }
         });
         initProcess.on('error', (err) => {
           console.log('Database initialization error, continuing anyway...', err.message);
