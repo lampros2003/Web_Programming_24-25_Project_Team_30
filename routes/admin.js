@@ -1,10 +1,24 @@
 var express = require('express');
 var router = express.Router();
+const fs = require('fs');
+const path = require('path');
 const { MenuItem, Table, Customer, Reservation, Employee, Session } = require('../models/models');
 
 // Admin dashboard
 router.get('/dashboard', function(req, res, next) {
-  res.render( 'dashboard',{period:"May",first_day:0,total_days:31});
+  res.render( 'dashboard',{period:"May",first_day:5,total_days:31});
+});
+router.post('/dashboard', function(req, res, next) {
+  const month = req.body.months
+  let monthsData = JSON.parse(fs.readFileSync(path.join(__dirname, '../data/months.json'), 'utf8'));
+
+  monthData = monthsData[month]
+
+  res.render( 'dashboard',
+      {period: month,
+      first_day: monthData.first_day,
+      total_days: monthData.total_days}
+);
 });
 
 

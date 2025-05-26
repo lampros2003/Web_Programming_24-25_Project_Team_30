@@ -43,6 +43,10 @@ h1 {
     min-height: 120px;
     border-radius: 20px;
 }
+.day:hover {
+    transform: scale(0.95);
+    cursor: pointer;
+}
 
 .day-number {
     position: absolute;
