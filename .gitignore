@@ -334,3 +334,4 @@ Thumbs.db
 # Logs
 logs
 *.log
+data/restaurant.db

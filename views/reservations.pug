@@ -4,57 +4,80 @@ block content
   .reservation-form-container
     h1.reservation-title RESERVATION
     
-    form.reservation-form(action="/submit-reservation", method="post")
-      .form-group
-        label(for="date") DATE
-        input#date.form-input(type="date" name="date" required)
-      
-      .form-group
-        label(for="time") TIME
-        input#time.form-input(type="time" name="time" min="10:00" max="22:00" required)
-      
-      .form-group
-        label(for="people") PEOPLE
-        input#people.form-input(type="number" name="people" min="1" max="20" placeholder="4" required)
-      
-      .form-group
-        label(for="area") AREA
-        .area-options
-          label.area-option
-            input#inside(type="radio" name="area" value="inside")
-            span Inside
-          label.area-option
-            input#outside(type="radio" name="area" value="outside")
-            span Outside
-          label.area-option
-            input#anywhere(type="radio" name="area" value="anywhere" checked)
-            span Anywhere
-      
-      .selected-area
-        p Your selected area: <span id="selectedArea">Anywhere</span>
-      
-      button.reservation-submit(type="submit") Make Reservation
+    if success && reservationCode
+      .success-message
+        h2 Reservation Confirmed!
+        p Your reservation code is: <strong>#{reservationCode}</strong>
+        p Please save this code for your records.
+        p We look forward to serving you!
+    
+    if error
+      .error-message
+        p #{error}
+    
+    if !success
+      form.reservation-form(action="/submit-reservation", method="post")
+        .form-group
+          label(for="name") NAME *
+          input#name.form-input(type="text" name="name" placeholder="Enter your full name" required)
+        
+        .form-group
+          label(for="phone") PHONE NUMBER *
+          input#phone.form-input(type="tel" name="phone" placeholder="Enter your phone number" required)
+        
+        .form-group
+          label(for="date") DATE *
+          input#date.form-input(type="date" name="date" required)
+        
+        .form-group
+          label(for="time") TIME *
+          input#time.form-input(type="time" name="time" min="10:00" max="22:00" required)
+        
+        .form-group
+          label(for="people") PARTY SIZE *
+          input#people.form-input(type="number" name="people" min="1" max="20" placeholder="4" required)
+        
+        .form-group
+          label(for="area") PREFERRED AREA
+          .area-options
+            label.area-option
+              input#inside(type="radio" name="area" value="inside")
+              span Inside
+            label.area-option
+              input#outside(type="radio" name="area" value="outside")
+              span Outside
+            label.area-option
+              input#anywhere(type="radio" name="area" value="anywhere" checked)
+              span Anywhere
+        
+        .selected-area
+          p Your selected area: <span id="selectedArea">Anywhere</span>
+        
+        button.reservation-submit(type="submit") Make Reservation
   
   script.
-    // Update selected area display when radio buttons change
     document.querySelectorAll('input[name="area"]').forEach(radio => {
       radio.addEventListener('change', function() {
         document.getElementById('selectedArea').textContent = this.value.charAt(0).toUpperCase() + this.value.slice(1);
         
-        // Remove active class from all options
         document.querySelectorAll('.area-option').forEach(option => {
           option.classList.remove('active');
         });
         
-        // Add active class to selected option
         this.parentElement.classList.add('active');
       });
     });
     
-    // Initialize the active class on page load
     window.addEventListener('DOMContentLoaded', () => {
       const checkedRadio = document.querySelector('input[name="area"]:checked');
       if (checkedRadio) {
         checkedRadio.parentElement.classList.add('active');
+      }
+      
+      // Set minimum date
+      const dateInput = document.getElementById('date');
+      if (dateInput) {
+        const today = new Date().toISOString().split('T')[0];
+        dateInput.min = today;
       }
     });

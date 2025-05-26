@@ -463,6 +463,62 @@ body {
   color: #6a1b9a;
 }
 
+/* Success and Error Message Styles */
+.success-message {
+  background-color: #d4edda;
+  border: 1px solid #c3e6cb;
+  color: #155724;
+  padding: 20px;
+  border-radius: 5px;
+  margin-bottom: 30px;
+  text-align: center;
+}
+
+.success-message h2 {
+  margin-top: 0;
+  color: #155724;
+}
+
+.success-message strong {
+  font-size: 24px;
+  letter-spacing: 2px;
+  background-color: #155724;
+  color: white;
+  padding: 10px 15px;
+  border-radius: 5px;
+  display: inline-block;
+  margin: 10px 0;
+}
+
+.error-message {
+  background-color: #f8d7da;
+  border: 1px solid #f5c6cb;
+  color: #721c24;
+  padding: 15px;
+  border-radius: 5px;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+/* Form validation styles */
+.form-input:invalid {
+  border-color: #dc3545;
+}
+
+.form-input:valid {
+  border-color: #28a745;
+}
+
+/* Required field indicator */
+.form-group label::after {
+  content: "";
+}
+
+.form-group label:has(+ .form-input[required])::after {
+  content: " *";
+  color: #dc3545;
+}
+
 @media (max-width: 768px) {
   .about-content {
     flex-direction: column;
