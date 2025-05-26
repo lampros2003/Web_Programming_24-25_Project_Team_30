@@ -3,9 +3,10 @@ var router = express.Router();
 const { MenuItem, Table, Customer, Reservation, Employee, Session } = require('../models/models');
 
 // Admin dashboard
-router.get('/', function(req, res, next) {
-  res.render('admin/dashboard', { title: 'Admin Dashboard' });
+router.get('/dashboard', function(req, res, next) {
+  res.render( 'dashboard',{period:"May",first_day:0,total_days:31});
 });
+
 
 // Menu management
 router.get('/menu', async function(req, res, next) {
@@ -77,6 +78,15 @@ router.get('/reservations', async function(req, res, next) {
 router.get('/users', async function(req, res, next) {
   try {
    
+  } catch (err) {
+    next(err);
+  }
+});
+
+router.get('/tables', async function(req, res, next) {
+  try {
+    res.render('tables')
+
   } catch (err) {
     next(err);
   }

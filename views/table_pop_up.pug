@@ -1,0 +1,34 @@
+.modal#exampleModal(tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true")
+      .modal-dialog
+        .modal-content
+          .modal-header
+            h1.modal-title.fs-5#exampleModalLabel Table
+            button.btn-close(type="button" data-bs-dismiss="modal" aria-label="Close")
+          .modal-body
+
+            form(action="/submit" method="POST")
+                div.span4#r
+                    //- onchange="this.form.submit()" for the inputs
+                    -let currentValue = '0'
+                    input(type='radio', name='table', value='0', checked=currentValue==='0')#wnr1
+                    input(type='radio', name='table', value='1', checked=currentValue==='1')#wnr2
+            
+                    label(for='wnr1')
+                        i.yes
+                        span.
+                            Empty
+
+
+                    label(for='wnr2')
+                        i.yes
+                        span.
+                            In Use
+
+            .alert.alert-info.mt-3
+              case currentValue
+                when '0'
+                  p The table is currently empty.
+                when '1'
+                  p 
+                    The table is currently in use.
+                        Estimated time remaining: 3 hours.

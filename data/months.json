@@ -1,0 +1,64 @@
+{
+  "months": [
+    {
+      "name": "January",
+      "first_day": 1,
+      "total_days": 31
+    },
+    {
+      "name": "February",
+      "first_day": 4,
+      "total_days": 28
+    },
+    {
+      "name": "March",
+      "first_day": 4,
+      "total_days": 31
+    },
+    {
+      "name": "April",
+      "first_day": 0,
+      "total_days": 30
+    },
+    {
+      "name": "May",
+      "first_day": 2,
+      "total_days": 31
+    },
+    {
+      "name": "June",
+      "first_day": 5,
+      "total_days": 30
+    },
+    {
+      "name": "July",
+      "first_day": 0,
+      "total_days": 31
+    },
+    {
+      "name": "August",
+      "first_day": 3,
+      "total_days": 31
+    },
+    {
+      "name": "September",
+      "first_day": 6,
+      "total_days": 30
+    },
+    {
+      "name": "October",
+      "first_day": 1,
+      "total_days": 31
+    },
+    {
+      "name": "November",
+      "first_day": 4,
+      "total_days": 30
+    },
+    {
+      "name": "December",
+      "first_day": 6,
+      "total_days": 31
+    }
+  ]
+}

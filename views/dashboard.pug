@@ -1,18 +1,18 @@
 doctype html 
 html 
     -const title= "Dashboard"
-    -const period= "March"
-    -const first_day = 5
-    -const total_days = 31
     head 
     link(rel='stylesheet', href='/stylesheets/dashboard_style.css')
     body 
         include nav_bar.pug
-        form.dashboard-form(action="/dashboard", method="get")
+        form.dashboard-form(action="dashboard", method="get")
             select(name="months" id="months" onchange="this.form.submit()")
                 -const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
                 for month in months
-                    option(value=month)= month
+                    option(
+                        value=month
+                        selected=(month === period)
+                    )= month
         h1= period 
         .calendar
             -const days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]
