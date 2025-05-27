@@ -3,6 +3,7 @@ var router = express.Router();
 const fs = require('fs');
 const path = require('path');
 const { MenuItem, Table, Customer, Reservation, Employee, Session } = require('../models/models');
+const {LogInForm,doLogin} = require("../controller/login-controller.mjs");
 
 // Admin dashboard
 router.get('/dashboard', function(req, res, next) {
@@ -114,5 +115,6 @@ router.get('/tables', async function(req, res, next) {
   }
 });
 
-
+router.get('/login', LogInForm)
+router.post('/login', doLogin)
 module.exports = router;

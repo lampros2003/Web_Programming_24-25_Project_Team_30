@@ -269,6 +269,17 @@ const Employee = {
       await db.close();
     }
   },
+  //Get employee by name
+  async getByName(name) {
+    const db = await getDbConnection();
+    try {
+      const result =  await db.get("SELECT name,code FROM employees WHERE name = ?  LIMIT 0,1", [name]);
+      console.log(result)
+      return result;
+    } finally {
+      await db.close();
+    }
+  },
   
   // Create a new employee
   async create(employeeData) {
