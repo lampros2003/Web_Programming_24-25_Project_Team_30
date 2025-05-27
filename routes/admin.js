@@ -6,7 +6,15 @@ const { MenuItem, Table, Customer, Reservation, Employee, Session } = require('.
 
 // Admin dashboard
 router.get('/dashboard', function(req, res, next) {
-  res.render( 'dashboard',{period:"May",first_day:5,total_days:31});
+  const date = new Date();
+  let currentMonth = date.getMonth();
+  const monthNames =["January", "February", "March", "April", "May", "June","July", "August", "September", "October", "November", "December"];
+  currentMonth = monthNames[currentMonth];
+  let monthsData = JSON.parse(fs.readFileSync(path.join(__dirname, '../data/months.json'), 'utf8'));
+
+  monthData = monthsData[currentMonth]
+  res.render( 'dashboard',{period:currentMonth,first_day: monthData.first_day,
+    total_days: monthData.total_days});
 });
 router.post('/dashboard', function(req, res, next) {
   const month = req.body.months

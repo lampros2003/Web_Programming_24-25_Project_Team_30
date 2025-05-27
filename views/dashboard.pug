@@ -25,7 +25,7 @@ html
 
             //sample data
             -const reservations = Array(31).fill(4)
-            -const area_2 = Array(31).fill(20)
+            -const sum_of_people = Array(31).fill(20)
             -const area_3 = Array(31).fill(1)
             -const area_4 = Array(31).fill(3)
 
@@ -36,7 +36,7 @@ html
                     .day(data-bs-toggle="modal" data-bs-target="#scheduleModal" data-date=`${i-first_day+1} ${period} 2025`)
                         .day-number= i-first_day+1                
                         .area(class= areas[0])= reservations[i-first_day]
-                        .area(class= areas[1])= area_2[i-first_day]
+                        .area(class= areas[1])= sum_of_people[i-first_day]
                         .area(class= areas[2])= area_3[i-first_day]
                         .area(class= areas[3])= area_4[i-first_day]
                         
