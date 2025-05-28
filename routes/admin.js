@@ -4,36 +4,15 @@ const fs = require('fs');
 const path = require('path');
 const { MenuItem, Table, Customer, Reservation, Employee, Session } = require('../models/models');
 const {LogInForm,doLogin,checkAuthenticated,Logout} = require("../controller/login-controller.js");
+const {Dashboard_manager} = require("../controller/dashboard-conroller.js");
 
-// Admin dashboard
 router.get('/',function (req,res,next){res.redirect('login');});
 router.get('/dashboard',checkAuthenticated);
 router.get('/tables',checkAuthenticated);
 router.get('/logout',Logout);
 
-router.get('/dashboard', function(req, res, next) {
-  const date = new Date();
-  let currentMonth = date.getMonth();
-  const monthNames =["January", "February", "March", "April", "May", "June","July", "August", "September", "October", "November", "December"];
-  currentMonth = monthNames[currentMonth];
-  let monthsData = JSON.parse(fs.readFileSync(path.join(__dirname, '../data/months.json'), 'utf8'));
-
-  monthData = monthsData[currentMonth]
-  res.render( 'dashboard',{period:currentMonth,first_day: monthData.first_day,
-    total_days: monthData.total_days});
-});
-router.post('/dashboard', function(req, res, next) {
-  const month = req.body.months
-  let monthsData = JSON.parse(fs.readFileSync(path.join(__dirname, '../data/months.json'), 'utf8'));
-
-  monthData = monthsData[month]
-
-  res.render( 'dashboard',
-      {period: month,
-      first_day: monthData.first_day,
-      total_days: monthData.total_days}
-);
-});
+// Admin dashboard
+router.get('/dashboard',Dashboard_manager);
 
 
 // Menu management

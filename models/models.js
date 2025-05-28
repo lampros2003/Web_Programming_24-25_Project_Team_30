@@ -184,6 +184,27 @@ const Reservation = {
     } finally {
       await db.close();
     }
+  },
+
+  async getReservationAnalytics(month) {
+
+    const db = await getDbConnection();
+    try {
+      statistics = await db.all(`SELECT reservation_date,
+                                        COUNT(*)                                                     as total_reservations,
+                                        COUNT(CASE WHEN deleted_at IS NOT NULL THEN 1 END)           as deleted_reservations,
+                                        COUNT(CASE WHEN deleted_at IS NULL THEN 1 END)               as active_reservations,
+                                        SUM(CASE WHEN deleted_at IS NULL THEN party_size ELSE 0 END) as total_guests_active
+                                 FROM reservations
+                                 WHERE strftime('%m', reservation_date) =  '${month}'
+                                 GROUP BY reservation_date
+                                 ORDER BY reservation_date;`);
+      return statistics;
+    }catch {
+      console.log("something went wrong with the statistics");
+    } finally {
+      await db.close();
+    }
   }
 };
 
@@ -274,7 +295,7 @@ const Employee = {
     const db = await getDbConnection();
     try {
       const result =  await db.get("SELECT name,code FROM employees WHERE name = ?  LIMIT 0,1", [name]);
-      console.log(result)
+      console.log(result);
       return result;
     } finally {
       await db.close();
@@ -374,7 +395,7 @@ module.exports = {
   Table,
   Customer,
   Reservation,
-  MenuItem,
   Employee,
+  MenuItem,
   Session
 };

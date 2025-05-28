@@ -6,7 +6,7 @@ html
     link(rel='stylesheet', href='/stylesheets/dashboard_style.css')
     body 
         include nav_bar.pug
-        form.dashboard-form(action="dashboard", method="post")
+        form.dashboard-form(action="dashboard", method="get")
             select(name="months" id="months" onchange="this.form.submit()")
                 -const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
                 for month in months
@@ -29,19 +29,18 @@ html
             -const area_3 = Array(31).fill(1)
             -const area_4 = Array(31).fill(3)
 
-            - for (let i = 1; i < total_days+first_day  ; i++)
+            - for (let i = 1; i < total_days+first_day; i++)
                 if i < first_day
                     .empty
                 else
-                    .day(data-bs-toggle="modal" data-bs-target="#scheduleModal" data-date=`${i-first_day+1} ${period} 2025`)
-                        .day-number= i-first_day+1                
-                        .area(class= areas[0])= reservations[i-first_day]
-                        .area(class= areas[1])= sum_of_people[i-first_day]
-                        .area(class= areas[2])= area_3[i-first_day]
-                        .area(class= areas[3])= area_4[i-first_day]
-                        
+                    -const day_number = i-first_day+1
+                    -const currentDate = i-first_day+1
+                    -let analytics = (typeof analytics_per_day !== 'undefined' && analytics_per_day) ? analytics_per_day.find(d => new Date(d.reservation_date).getDate() === currentDate) : null
+                    .day(data-bs-toggle="modal" data-bs-target="#scheduleModal" data-date=`${day_number} ${period} 2025`)
+                        .day-number= day_number
+                        .area(class= areas[0])= analytics ? analytics.total_reservations : 0
+                        .area(class= areas[1])= analytics ? analytics.total_guests_active : 0
+                        .area(class= areas[2])= analytics ? analytics.deleted_reservations : 0
+                        .area(class= areas[3])= analytics ? analytics.active_reservations : 0
+
     include day_pop_up.pug
-
-
-
-
