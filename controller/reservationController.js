@@ -186,9 +186,14 @@ const reservationController = {
       if (!Customer || !Reservation) {
         return res.redirect('/reservations?error=Database is down. Please try again later.');
       }
+
+      const numericReservationId = parseInt(reservationId, 10);
+      if (isNaN(numericReservationId)) {
+        return res.redirect('/reservations?error=Invalid reservation ID format.');
+      }
       
       // Get the existing reservation
-      const existingReservation = await Reservation.getById(reservationId);
+      const existingReservation = await Reservation.getById(numericReservationId);
       if (!existingReservation) {
         return res.redirect('/reservations?error=Reservation not found.');
       }
@@ -218,8 +223,8 @@ const reservationController = {
       });
       
       // Update reservation
-      await Reservation.update(reservationId, {
-        table_id: existingReservation.table_id,
+      await Reservation.update(numericReservationId, {
+        table_id: existingReservation.table_id, // Keep existing table_id, or null if not assigned
         customer_id: existingReservation.customer_id,
         reservation_date: date,
         reservation_time: time,
@@ -257,9 +262,14 @@ const reservationController = {
       if (!Reservation) {
         return res.redirect('/reservations?error=Database is down. Please try again later.');
       }
+
+      const numericReservationId = parseInt(reservationId, 10);
+      if (isNaN(numericReservationId)) {
+        return res.redirect('/reservations?error=Invalid reservation ID format.');
+      }
       
       // Get the existing reservation
-      const existingReservation = await Reservation.getById(reservationId);
+      const existingReservation = await Reservation.getById(numericReservationId);
       if (!existingReservation) {
         return res.redirect('/reservations?error=Reservation not found.');
       }
@@ -275,7 +285,7 @@ const reservationController = {
       }
       
       // Cancel the reservation (soft delete)
-      await Reservation.softDelete(reservationId);
+      await Reservation.softDelete(numericReservationId);
       
       console.log('Reservation cancelled successfully:', {
         id: reservationId,
