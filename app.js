@@ -9,7 +9,21 @@ var usersRouter = require('./routes/users');
 var adminRouter = require('./routes/admin');
 
 var app = express();
+const dotenv = require('dotenv');
+if (process.env.NODE_ENV !== 'production') {
+  dotenv.config();
+}
+const {sessionMiddleware} = require('./setup/setup-session.js')
+app.use(sessionMiddleware)
 
+app.use((req, res, next) => {
+  if (req.session) {
+    res.locals.userId = req.session.loggedUserId;
+  } else {
+    res.locals.userId = null;
+  }
+  next();
+});
 
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');

@@ -3,9 +3,14 @@ var router = express.Router();
 const fs = require('fs');
 const path = require('path');
 const { MenuItem, Table, Customer, Reservation, Employee, Session } = require('../models/models');
-const {LogInForm,doLogin} = require("../controller/login-controller.mjs");
+const {LogInForm,doLogin,checkAuthenticated,Logout} = require("../controller/login-controller.js");
 
 // Admin dashboard
+router.get('/',function (req,res,next){res.redirect('login');});
+router.get('/dashboard',checkAuthenticated);
+router.get('/tables',checkAuthenticated);
+router.get('/logout',Logout);
+
 router.get('/dashboard', function(req, res, next) {
   const date = new Date();
   let currentMonth = date.getMonth();

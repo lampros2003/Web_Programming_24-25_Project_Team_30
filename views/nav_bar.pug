@@ -6,16 +6,20 @@ if !title
   nav.main-nav
     case title
       when 'Dashboard'
-        a.nav-item(href="/admin/menu", class=(activeTab === 'menu' ? 'active' : '')) Menu
-        a.nav-item(href="/admin/tables", class=(activeTab === 'tables' ? 'active' : '')) Tables
+        a.nav-item(href="menu", class=(activeTab === 'menu' ? 'active' : '')) Menu
+        a.nav-item(href="tables", class=(activeTab === 'tables' ? 'active' : '')) Tables
+        a.nav-item(href="logout", class=(activeTab === 'logout' ? 'active' : '')) Logout
       when 'Menu'
         a.nav-item(href="/dashboard", class=(activeTab === 'dashboard' ? 'active' : '')) Dashboard
         a.nav-item(href="/admin/tables", class=(activeTab === 'tables' ? 'active' : '')) Tables
+        a.nav-item(href="logout", class=(activeTab === 'logout' ? 'active' : '')) Logout
       when 'Tables'
         a.nav-item(href="/admin/dashboard", class=(activeTab === 'dashboard' ? 'active' : '')) Dashboard
         a.nav-item(href="/admin/menu", class=(activeTab === 'menu' ? 'active' : '')) Menu
+        a.nav-item(href="logout", class=(activeTab === 'logout' ? 'active' : '')) Logout
       default
         a.nav-item(href="/admin/menu", class=(activeTab === 'menu' ? 'active' : '')) Menu
         a.nav-item(href="/admin/tables", class=(activeTab === 'tables' ? 'active' : '')) Tables
+        a.nav-item(href="logout", class=(activeTab === 'logout' ? 'active' : '')) Logout
 
     
