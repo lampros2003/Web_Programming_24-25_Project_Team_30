@@ -1,0 +1,9 @@
+extends ../layout
+
+block content
+  .container.mt-4
+    h1= title
+    p Are you sure you want to delete the menu item "#{item.name}"?
+    form(action=`/admin/menu/delete/${item.id}`, method="post")
+      button.btn.btn-danger(type="submit") Delete
+      a.btn.btn-secondary.ms-2(href="/admin/menu") Cancel
