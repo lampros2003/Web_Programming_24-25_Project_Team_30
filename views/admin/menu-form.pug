@@ -1,0 +1,34 @@
+extends ../layout
+
+block content
+  .container.mt-4
+    h1= title
+    form(action=action, method="post")
+      .mb-3
+        label.form-label(for="name") Name
+        input.form-control(type="text", id="name", name="name", value=item.name, required)
+      .mb-3
+        label.form-label(for="ingredients") Ingredients
+        textarea.form-control(id="ingredients", name="ingredients", rows="3")= item.ingredients
+      .mb-3
+        label.form-label(for="price") Price
+        input.form-control(type="number", id="price", name="price", step="0.01", value=item.price, required)
+      .mb-3
+        label.form-label(for="category") Category
+        select.form-select(id="category", name="category")
+          option(value="starter", selected=item.category === 'starter') Starter
+          option(value="main", selected=item.category === 'main') Main Course
+          option(value="dessert", selected=item.category === 'dessert') Dessert
+          option(value="drink", selected=item.category === 'drink') Drink
+      .mb-3
+        label.form-label(for="image") Image URL
+        input.form-control(type="text", id="image", name="image", value=item.image, placeholder="/images/menu/default.jpg")
+      .mb-3
+        label.form-label(for="dietary_restrictions") Dietary Restrictions (comma-separated)
+        input.form-control(type="text", id="dietary_restrictions", name="dietary_restrictions", value=item.dietary_restrictions)
+      .form-check.mb-3
+        input.form-check-input(type="checkbox", id="available", name="available", checked=item.available)
+        label.form-check-label(for="available") Available
+      
+      button.btn.btn-primary(type="submit")= submitButtonText
+      a.btn.btn-secondary.ms-2(href="/admin/menu") Cancel

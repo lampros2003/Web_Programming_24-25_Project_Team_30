@@ -255,12 +255,12 @@ const MenuItem = {
   
   // Create a new menu item
   async create(itemData) {
-    const { name, ingredients, price, available } = itemData;
+    const { name, ingredients, price, available, category, image, dietary_restrictions } = itemData;
     const db = await getDbConnection();
     try {
       return await db.run(
-        "INSERT INTO menu_items (name, ingredients, price, available) VALUES (?, ?, ?, ?)",
-        [name, ingredients, price, available ? 1 : 0]
+        "INSERT INTO menu_items (name, ingredients, price, available, category, image, dietary_restrictions) VALUES (?, ?, ?, ?, ?, ?, ?)",
+        [name, ingredients, price, available ? 1 : 0, category, image, dietary_restrictions]
       );
     } finally {
       await db.close();
@@ -269,12 +269,12 @@ const MenuItem = {
   
   // Update menu item
   async update(id, itemData) {
-    const { name, ingredients, price, available } = itemData;
+    const { name, ingredients, price, available, category, image, dietary_restrictions } = itemData;
     const db = await getDbConnection();
     try {
       return await db.run(
-        "UPDATE menu_items SET name = ?, ingredients = ?, price = ?, available = ?, updated_at = CURRENT_TIMESTAMP WHERE id = ?",
-        [name, ingredients, price, available ? 1 : 0, id]
+        "UPDATE menu_items SET name = ?, ingredients = ?, price = ?, available = ?, category = ?, image = ?, dietary_restrictions = ?, updated_at = CURRENT_TIMESTAMP WHERE id = ?",
+        [name, ingredients, price, available ? 1 : 0, category, image, dietary_restrictions, id]
       );
     } finally {
       await db.close();
