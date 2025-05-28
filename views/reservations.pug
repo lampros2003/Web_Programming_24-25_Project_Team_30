@@ -6,16 +6,27 @@ block content
     
     if success && reservationCode
       .success-message
-        h2 Reservation Confirmed!
-        p Your reservation code is: <strong>#{reservationCode}</strong>
-        p Please save this code for your records.
-        p We look forward to serving you!
+        if cancelled
+          h2 Reservation Cancelled!
+          p Your reservation has been successfully cancelled.
+          p If you have any questions, please contact us.
+        else if updated
+          h2 Reservation Updated!
+          p Your reservation code is: <strong>#{reservationCode}</strong>
+          p Your reservation has been successfully updated.
+          p We look forward to serving you!
+        else
+          h2 Reservation Confirmed!
+          p Your reservation code is: <strong>#{reservationCode}</strong>
+          p Please save this code for your records.
+          p We look forward to serving you!
     
     if error
       .error-message
         p #{error}
     
-    if !success
+    if !success && !editMode
+      // New reservation form
       form.reservation-form(action="/submit-reservation", method="post")
         .form-group
           label(for="name") NAME *
@@ -28,10 +39,24 @@ block content
         .form-group
           label(for="date") DATE *
           input#date.form-input(type="date" name="date" required)
-        
-        .form-group
+          .form-group
           label(for="time") TIME *
-          input#time.form-input(type="time" name="time" min="10:00" max="22:00" required)
+          select#time.form-input(name="time" required)
+            option(value="") Select Time
+            option(value="10:00") 10:00 AM
+            option(value="11:00") 11:00 AM
+            option(value="12:00") 12:00 PM
+            option(value="13:00") 1:00 PM
+            option(value="14:00") 2:00 PM
+            option(value="15:00") 3:00 PM
+            option(value="16:00") 4:00 PM
+            option(value="17:00") 5:00 PM
+            option(value="18:00") 6:00 PM
+            option(value="19:00") 7:00 PM
+            option(value="20:00") 8:00 PM
+            option(value="21:00") 9:00 PM
+            option(value="22:00") 10:00 PM
+            option(value="23:00") 11:00 PM
         
         .form-group
           label(for="people") PARTY SIZE *
@@ -54,6 +79,89 @@ block content
           p Your selected area: <span id="selectedArea">Anywhere</span>
         
         button.reservation-submit(type="submit") Make Reservation
+      
+      // Divider
+      .divider
+        hr
+        p.or-text OR
+        hr
+        // Edit existing reservation section
+      .edit-reservation-section
+        h2 Edit Existing Reservation
+        p Enter your reservation code to modify or cancel your booking (only for reservations at least 2 days in the future):
+        
+        form.lookup-form(action="/lookup-reservation", method="post")
+          .form-group
+            label(for="reservationCode") RESERVATION CODE *
+            input#reservationCode.form-input(type="text" name="reservationCode" placeholder="Enter your 6-character code" maxlength="6" style="text-transform: uppercase" required)
+          
+          button.lookup-submit(type="submit") Look Up Reservation
+    
+    if editMode && reservation && customer
+      // Edit reservation form
+      .edit-form-container
+        h2 Edit Your Reservation
+        p Reservation Code: <strong>#{reservation.code}</strong>
+        
+        form.reservation-form(action="/update-reservation", method="post")
+          input(type="hidden" name="reservationId" value=reservation.id)
+          
+          .form-group
+            label(for="name") NAME *
+            input#name.form-input(type="text" name="name" value=customer.name required)
+          
+          .form-group
+            label(for="phone") PHONE NUMBER *
+            input#phone.form-input(type="tel" name="phone" value=customer.phone required)
+          
+          .form-group
+            label(for="date") DATE *
+            input#date.form-input(type="date" name="date" value=reservation.reservation_date required)
+            .form-group
+            label(for="time") TIME *
+            select#time.form-input(name="time" required)
+              option(value="") Select Time
+              option(value="10:00" selected=(reservation.reservation_time === "10:00")) 10:00 AM
+              option(value="11:00" selected=(reservation.reservation_time === "11:00")) 11:00 AM
+              option(value="12:00" selected=(reservation.reservation_time === "12:00")) 12:00 PM
+              option(value="13:00" selected=(reservation.reservation_time === "13:00")) 1:00 PM
+              option(value="14:00" selected=(reservation.reservation_time === "14:00")) 2:00 PM
+              option(value="15:00" selected=(reservation.reservation_time === "15:00")) 3:00 PM
+              option(value="16:00" selected=(reservation.reservation_time === "16:00")) 4:00 PM
+              option(value="17:00" selected=(reservation.reservation_time === "17:00")) 5:00 PM
+              option(value="18:00" selected=(reservation.reservation_time === "18:00")) 6:00 PM
+              option(value="19:00" selected=(reservation.reservation_time === "19:00")) 7:00 PM
+              option(value="20:00" selected=(reservation.reservation_time === "20:00")) 8:00 PM
+              option(value="21:00" selected=(reservation.reservation_time === "21:00")) 9:00 PM
+              option(value="22:00" selected=(reservation.reservation_time === "22:00")) 10:00 PM
+              option(value="23:00" selected=(reservation.reservation_time === "23:00")) 11:00 PM
+          
+          .form-group
+            label(for="people") PARTY SIZE *
+            input#people.form-input(type="number" name="people" value=reservation.party_size min="1" max="20" required)
+          
+          .form-group
+            label(for="area") PREFERRED AREA
+            .area-options
+              label.area-option
+                input#inside(type="radio" name="area" value="inside")
+                span Inside
+              label.area-option
+                input#outside(type="radio" name="area" value="outside")
+                span Outside
+              label.area-option
+                input#anywhere(type="radio" name="area" value="anywhere" checked)
+                span Anywhere
+          
+          .selected-area
+            p Your selected area: <span id="selectedArea">Anywhere</span>
+            .form-buttons
+            button.reservation-submit(type="submit") Update Reservation
+            a.cancel-button(href="/reservations") Back to Reservations
+            .cancel-section
+            form.cancel-form(action="/cancel-reservation", method="post")
+              input(type="hidden" name="reservationId" value=reservation.id)
+              button.cancel-reservation-button(type="submit" onclick="return confirm('Are you sure you want to cancel this reservation? This action cannot be undone.')") Cancel Reservation
   
   script.
     document.querySelectorAll('input[name="area"]').forEach(radio => {
@@ -74,10 +182,24 @@ block content
         checkedRadio.parentElement.classList.add('active');
       }
       
-      // Set minimum date
+      // Set date restrictions (2 days minimum, 2 months maximum from today)
       const dateInput = document.getElementById('date');
       if (dateInput) {
-        const today = new Date().toISOString().split('T')[0];
-        dateInput.min = today;
+        const today = new Date();
+        const minDate = new Date(today);
+        minDate.setDate(today.getDate() + 2);
+        const maxDate = new Date(today);
+        maxDate.setMonth(today.getMonth() + 2);
+        
+        dateInput.min = minDate.toISOString().split('T')[0];
+        dateInput.max = maxDate.toISOString().split('T')[0];
+      }
+      
+      // Handle reservation code input formatting
+      const codeInput = document.getElementById('reservationCode');
+      if (codeInput) {
+        codeInput.addEventListener('input', function() {
+          this.value = this.value.toUpperCase().replace(/[^A-Z0-9]/g, '');
+        });
       }
     });

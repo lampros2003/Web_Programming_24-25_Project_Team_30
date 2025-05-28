@@ -145,6 +145,16 @@ const Reservation = {
     }
   },
   
+  // Get reservation by code
+  async getByCode(code) {
+    const db = await getDbConnection();
+    try {
+      return await db.get("SELECT * FROM reservations WHERE code = ? AND deleted_at IS NULL", [code]);
+    } finally {
+      await db.close();
+    }
+  },
+  
   // Create a new reservation
   async create(reservationData) {
     const { table_id, customer_id, reservation_date, reservation_time, party_size, code } = reservationData;
@@ -180,6 +190,19 @@ const Reservation = {
       return await db.run(
         "UPDATE reservations SET deleted_at = CURRENT_TIMESTAMP WHERE id = ?",
         [id]
+      );
+    } finally {
+      await db.close();
+    }
+  },
+
+  // Cancel reservation by code
+  async cancelByCode(code) {
+    const db = await getDbConnection();
+    try {
+      return await db.run(
+        "UPDATE reservations SET deleted_at = CURRENT_TIMESTAMP WHERE code = ? AND deleted_at IS NULL",
+        [code]
       );
     } finally {
       await db.close();
