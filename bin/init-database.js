@@ -57,49 +57,13 @@ async function insertDemoData() {
       await db.run("DELETE FROM menu_items");
       await db.run("DELETE FROM tables"); 
       await db.run("DELETE FROM employees");
+      await db.run("DELETE FROM reservations");
+      await db.run("DELETE FROM customers");
     } catch (err) {
       console.log('Note: Tables may not exist yet, continuing with fresh setup...');
     }
-    // Add tables
-    await db.run("INSERT INTO tables (shape, table_number, capacity, location) VALUES (?, ?, ?, ?)", 
-      ['round', 1, 4, 'window']);
-    await db.run("INSERT INTO tables (shape, table_number, capacity, location) VALUES (?, ?, ?, ?)", 
-      ['square', 2, 2, 'corner']);
-    await db.run("INSERT INTO tables (shape, table_number, capacity, location) VALUES (?, ?, ?, ?)", 
-      ['rectangular', 3, 6, 'center']);
-
-    // Add comprehensive menu items with categories, images, and dietary restrictions
-    await db.run("INSERT INTO menu_items (name, ingredients, price, available, category, image, dietary_restrictions) VALUES (?, ?, ?, ?, ?, ?, ?)",
-      ['Creamy Wild Mushroom Soup', 'Wild mushrooms, cream, truffle oil, fresh herbs, garlic', 12.99, 1, 'starter', '/images/menu/mushroom-soup.jpg', 'vegetarian,gluten-free']);
-    await db.run("INSERT INTO menu_items (name, ingredients, price, available, category, image, dietary_restrictions) VALUES (?, ?, ?, ?, ?, ?, ?)",
-      ['Mediterranean Bruschetta', 'Artisan bread, tomatoes, basil, balsamic glaze, olive oil', 9.99, 1, 'starter', '/images/menu/bruschetta.jpg', 'vegan']);
-    await db.run("INSERT INTO menu_items (name, ingredients, price, available, category, image, dietary_restrictions) VALUES (?, ?, ?, ?, ?, ?, ?)",
-      ['Caesar Salad', 'Romaine lettuce, parmesan cheese, croutons, caesar dressing', 11.50, 1, 'starter', '/images/menu/caesar-salad.jpg', 'vegetarian']);
-    await db.run("INSERT INTO menu_items (name, ingredients, price, available, category, image, dietary_restrictions) VALUES (?, ?, ?, ?, ?, ?, ?)",
-      ['Grilled Atlantic Salmon', 'Fresh salmon fillet, lemon-dill sauce, seasonal vegetables', 26.99, 1, 'main', '/images/menu/salmon.jpg', 'gluten-free']);
-    await db.run("INSERT INTO menu_items (name, ingredients, price, available, category, image, dietary_restrictions) VALUES (?, ?, ?, ?, ?, ?, ?)",
-      ['Truffle Risotto', 'Arborio rice, wild mushrooms, white truffle oil, aged Parmesan', 22.50, 1, 'main', '/images/menu/risotto.jpg', 'vegetarian']);
-    await db.run("INSERT INTO menu_items (name, ingredients, price, available, category, image, dietary_restrictions) VALUES (?, ?, ?, ?, ?, ?, ?)",
-      ['Grass-Fed Ribeye Steak', '12oz prime ribeye, red wine reduction, roasted garlic butter', 34.99, 1, 'main', '/images/menu/steak.jpg', '']);
-    await db.run("INSERT INTO menu_items (name, ingredients, price, available, category, image, dietary_restrictions) VALUES (?, ?, ?, ?, ?, ?, ?)",
-      ['Vegan Buddha Bowl', 'Quinoa, roasted vegetables, avocado, chickpeas, tahini dressing', 18.99, 1, 'main', '/images/menu/buddha-bowl.jpg', 'vegan,gluten-free,nut-free']);
-    await db.run("INSERT INTO menu_items (name, ingredients, price, available, category, image, dietary_restrictions) VALUES (?, ?, ?, ?, ?, ?, ?)",
-      ['Margherita Pizza', 'San Marzano tomatoes, fresh mozzarella, basil, olive oil', 16.99, 1, 'main', '/images/menu/pizza.jpg', 'vegetarian']);
-    await db.run("INSERT INTO menu_items (name, ingredients, price, available, category, image, dietary_restrictions) VALUES (?, ?, ?, ?, ?, ?, ?)",
-      ['Dark Chocolate Soufflé', 'Belgian dark chocolate, vanilla bean ice cream, berry coulis', 14.99, 1, 'dessert', '/images/menu/chocolate-souffle.jpg', 'vegetarian']);
-    await db.run("INSERT INTO menu_items (name, ingredients, price, available, category, image, dietary_restrictions) VALUES (?, ?, ?, ?, ?, ?, ?)",
-      ['Lemon Tart', 'Tangy lemon curd, buttery pastry shell, fresh berries, mint', 10.99, 1, 'dessert', '/images/menu/lemon-tart.jpg', 'vegetarian,nut-free']);
-    await db.run("INSERT INTO menu_items (name, ingredients, price, available, category, image, dietary_restrictions) VALUES (?, ?, ?, ?, ?, ?, ?)",
-      ['Tiramisu', 'Ladyfingers, mascarpone, espresso, cocoa powder', 12.50, 1, 'dessert', '/images/menu/tiramisu.jpg', 'vegetarian']);
-
-    // Add employees
-    await db.run("INSERT INTO employees (name, code, role) VALUES (?, ?, ?)",
-      ['Admin User', 'admin123', 'administrator']);
-    await db.run("INSERT INTO employees (name, code, role) VALUES (?, ?, ?)",
-      ['Waiter One', 'waiter123', 'waiter']);
-
     // Add demo data
-    await db.run(`BEGIN TRANSACTION;
+    await db.exec(`BEGIN TRANSACTION;
     INSERT INTO "customers" ("id","name","phone","created_at","updated_at") VALUES (2,'john johnson','6987654321','2025-05-27 10:06:13','2025-05-27 10:06:13');
     INSERT INTO "customers" ("id","name","phone","created_at","updated_at") VALUES (3,'Mila Cruz','202-555-1000','2025-05-27 10:19:31','2025-05-27 10:19:31');
     INSERT INTO "customers" ("id","name","phone","created_at","updated_at") VALUES (4,'Natalie Edwards','202-555-1001','2025-05-27 10:19:31','2025-05-27 10:19:31');
@@ -302,9 +266,9 @@ async function insertDemoData() {
     INSERT INTO "reservations" ("id","table_id","customer_id","reservation_date","reservation_time","party_size","code","deleted_at","created_at","updated_at") VALUES (108,6,28,'2025-06-11','12:00:00',3,'5ZUFNF',NULL,'2025-05-27 12:00:00','2025-05-27 12:00:00');
     INSERT INTO "reservations" ("id","table_id","customer_id","reservation_date","reservation_time","party_size","code","deleted_at","created_at","updated_at") VALUES (109,7,29,'2025-06-20','13:00:00',4,'D3NGV3',NULL,'2025-05-27 15:00:00','2025-05-27 15:00:00');
     INSERT INTO "reservations" ("id","table_id","customer_id","reservation_date","reservation_time","party_size","code","deleted_at","created_at","updated_at") VALUES (110,8,30,'2025-06-07','17:00:00',2,'UBUEWJ',NULL,'2025-05-27 18:00:00','2025-05-27 18:00:00');
-    INSERT INTO "tables" ("id","shape","table_number","capacity","location","created_at","updated_at") VALUES (193,'round',1,4,'window','2025-05-28 11:02:39','2025-05-28 11:02:39');
-    INSERT INTO "tables" ("id","shape","table_number","capacity","location","created_at","updated_at") VALUES (194,'square',2,2,'corner','2025-05-28 11:02:39','2025-05-28 11:02:39');
-    INSERT INTO "tables" ("id","shape","table_number","capacity","location","created_at","updated_at") VALUES (195,'rectangular',3,6,'center','2025-05-28 11:02:39','2025-05-28 11:02:39');
+    INSERT INTO "tables" ("id","shape","table_number","capacity","location","created_at","updated_at") VALUES (193,'round',1,4,'outside','2025-05-28 11:02:39','2025-05-28 11:02:39');
+    INSERT INTO "tables" ("id","shape","table_number","capacity","location","created_at","updated_at") VALUES (194,'square',2,2,'outside','2025-05-28 11:02:39','2025-05-28 11:02:39');
+    INSERT INTO "tables" ("id","shape","table_number","capacity","location","created_at","updated_at") VALUES (195,'rectangular',3,6,'inside','2025-05-28 11:02:39','2025-05-28 11:02:39');
     COMMIT;`);
 
     console.log('Demo data inserted successfully');
